@@ -63,27 +63,28 @@ app.post('/quadratic-equation', (req, res) => {
 });
 
 app.get('/cpu-info', (req, res) => {
-  const promise = new Promise((resolve) => {
-    const { stdout } = exec('cat /proc/cpuinfo', (error, stdout) => {
+  const promise = new Promise((resolve, reject) => {
+    exec('cat /proc/cpuinfo', (error, stdout) => {
       if (error) {
         console.error('Exec error: ', error);
-        return false;
+        reject(error);
       }
-      return stdout;
+      resolve(stdout);
     });
-    resolve(stdout);
   });
   promise.then((value) => {
     console.log(value);
-    if (value === false) {
-      res.status(500).send(
-        {
-          error: 'server error',
-        },
-      );
-    } else {
-      res.status(200).send(value);
-    }
+    res.status(200).send(value);
+  });
+
+  promise.catch((e) => {
+    console.log(e);
+    res.status(500).send(
+      {
+        error: 'server error',
+        processError: e,
+      },
+    );
   });
 });
 
