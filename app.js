@@ -11,10 +11,10 @@ const quadraticEquation = (a, b, c) => {
     let res;
     const D = b * b - 4 * a * c;
     if (D < 0) return false;
-    if (D === 0) res = (-b + Math.sqrt(D)) / (2 * a).toString();
+    if (D === 0) res = Math.round((-b + Math.sqrt(D)) / (2 * a)).toString();
     else if (D > 0) {
-        res = (-b + Math.sqrt(D)) / (2 * a).toFixed(2).toString();
-        res = `${res}, ${(-b - Math.sqrt(D)) / (2 * a).toFixed(2).toString()}`;
+        res = Math.round((-b + Math.sqrt(D)) / (2 * a)).toString();
+        res = `${res}, ${Math.round((-b - Math.sqrt(D)) / (2 * a)).toString()}`;
     }
     return res;
 };
@@ -91,3 +91,4 @@ app.get('/cpu-info', (req, res) => {
 });
 
 app.listen(port, () => console.log(`Server listens ${port}`));
+
